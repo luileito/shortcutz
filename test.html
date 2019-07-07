@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="asserter.min.js"></script>
+    <script src="shortcutz.min.js"></script>
+  </head>
+  <body>
+    Open your JS console to see the test results.
+
+    <script>
+    (function() {
+
+      // Custom function to trigger keyboard events.
+      function triggerKeyEvent(c, modifiers) {
+          modifiers = modifiers || {};
+          var evt = new KeyboardEvent('keydown', {
+              key: c,
+              keyCode: c.charCodeAt(0),
+              ctrlKey: modifiers.ctrlKey,
+              shiftKey: modifiers.shiftKey,
+              altKey: modifiers.altKey,
+              metaKey: modifiers.metaKey,
+          });
+          document.dispatchEvent(evt);
+      }
+
+      var status;
+      // Whenever an event is fired, change status value.
+      document.addEventListener('keydown', function(ev) {
+          status = ev.key;
+      });
+
+      // Don't do anything while executing shortcut callbacks.
+      function noop() {}
+
+      var shortz = new Shortcutz('keydown');
+      // Assign one callback to one shortcut.
+      shortz.add('A', noop);
+      // Assign one callback to many shortcuts.
+      shortz.add(['B', 'C'], noop);
+      // Assign many callbacks to one shortcut.
+      shortz.add('CTRL + Z', [noop, noop]);
+      // Assign many callbacks to many shortcuts.
+      shortz.add(['CTRL+Y', 'CTRL+SHIFT+Z'], [noop, noop]);
+
+      asserter
+      .test('one to one').that(function() {
+          triggerKeyEvent('A');
+          return status;
+      }).equals('A')
+      .test('many to one (1)').that(function() {
+          triggerKeyEvent('B');
+          return status;
+      }).equals('B')
+      .test('many to one (2)').that(function() {
+          triggerKeyEvent('C');
+          return status;
+      }).equals('C')
+      .test('one to many').that(function() {
+          triggerKeyEvent('Z', { ctrlKey: true });
+          return status;
+      }).equals('Z')
+      .test('many to many (1)').that(function() {
+          triggerKeyEvent('Y', { ctrlKey: true });
+          return status;
+      }).equals('Y')
+      .test('many to many (2)').that(function() {
+          triggerKeyEvent('Z', { ctrlKey: true, shiftKey: true });
+          return status;
+      }).equals('Z')
+      .run('Shortcut definitions test');
+
+    })();
+    </script>
+  </body>
+</html>

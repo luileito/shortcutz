@@ -1,0 +1,10 @@
+.*
+*~
+*.min.*
+*.gz
+coverage
+node_modules
+local
+docs
+*.log
+*.bak
