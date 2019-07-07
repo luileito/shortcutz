@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint shortcutz.js || echo [sudo] npm i -g eslint",
     "dist": "uglifyjs shortcutz.js -o shortcutz.min.js || echo [sudo] npm i -g uglifyjs",
-    "docs": "jsdoc shortcutz.js -d docs || echo [sudo] npm i -g jsdoc"
+    "docs": "jsdoc shortcutz.js -d docs || echo [sudo] npm i -g jsdoc",
+    "test": "wget https://raw.githubusercontent.com/luileito/asserter/master/asserter.js && echo 'Now open test.html'"
   },
   "repository": {
     "type": "git",

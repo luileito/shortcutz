@@ -4,6 +4,7 @@
 *.gz
 coverage
 node_modules
+asserter.js
 local
 docs
 *.log
