@@ -1,6 +1,7 @@
 /**
  * A dead-simple yet powerful keyboard shortcuts manager.
  * @param {string} eventType Keyboard event type: keydown (default), keypress, keyup.
+ * @param {string} context DOM element to attach key events. Default: document.
  * @author Luis A. Leiva
  * @example
  * var shortz = new Shortcutz();
@@ -13,16 +14,16 @@
  * // Flexible shortcut definition.
  * shortz.add('CTRL+A', [console.log, console.info]);
  */
-function Shortcutz(eventType) { // eslint-disable-line no-unused-vars
-    // Trigger callback after a keyboard key is released.
+function Shortcutz(eventType, context) { // eslint-disable-line no-unused-vars
     eventType = eventType || 'keydown';
+    context = context || window.document;
     // Some observations:
     // - The `keypress` event doesn't work well with `CTRL + SHIFT` combos.
     // - The `keydown` event is fired endlessly if key isn't released,
     // however it's the most reliable way of preventing default events.
     // - If we listen to `keyup` events, then events are propagated
     // even if we use `event.preventDefault()`.
-    document.addEventListener(eventType, onKey);
+    context.addEventListener(eventType, onKey);
 
     // Map friendly char codes to actual key codes.
     // Seamlessly borrowed from https://github.com/kabirbaidhya/keycode-js
