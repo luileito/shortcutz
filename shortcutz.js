@@ -171,8 +171,10 @@ function Shortcutz(eventType) { // eslint-disable-line no-unused-vars
 
                         var callbacks = shortcuts[entry];
                         callbacks.forEach(function(fn) {
-                            // Pass in keyboard event to the callback.
-                            fn(ev);
+                            // Pass in a custom event with additional data to the callback.
+                            var custom = new CustomEvent(eventType, {detail: {shortcut: entry}});
+                            for (var prop in ev) custom[prop] = ev[prop]; // eslint-disable-line guard-for-in
+                            fn(custom);
                         });
                         // Don't execute further events.
                         return;
