@@ -6,7 +6,40 @@
     <script src="shortcutz.js"></script>
   </head>
   <body>
-    Open your JS console to see the test results.
+    <p>
+      The following dummy keyboard shortcuts are available:
+      <dl>
+        <dt>
+          <kbd>A<kbd>
+        </dt>
+        <dd>
+          Only one event should be triggered.
+        </dd>
+        <dt>
+          <kbd>B<kbd> or <kbd>C<kbd>
+        </dt>
+        <dd>
+          Only one event should be triggered.
+        </dd>
+        <dt>
+          <kbd>CTRL+Z<kbd>
+        </dt>
+        <dd>
+          Exactly two events should be triggered.
+        </dd>
+        <dt>
+          <kbd>CTRL+Y<kbd> or <kbd>CTRL+SHIFT+Z<kbd>
+        </dt>
+        <dd>
+          Exactly two events should be triggered.
+        </dd>
+      </dl>
+      Open your JS console to see these events being triggered.
+    </p>
+
+    <hr/>
+
+    <pre id="debug-console"></pre>
 
     <script>
     (function() {
@@ -31,8 +64,11 @@
           status = ev.key;
       });
 
-      // Don't do anything while executing shortcut callbacks.
-      function noop() {}
+      // Don't do anything while executing shortcut callbacks,
+      // just inform that a shortcut has been detected.
+      function noop(ev) {
+          console.log('Shortcut detected: %s', ev.detail.shortcut);
+      }
 
       var shortz = new Shortcutz('keydown');
       // Assign one callback to one shortcut.
@@ -44,6 +80,13 @@
       // Assign many callbacks to many shortcuts.
       shortz.add(['CTRL+Y', 'CTRL+SHIFT+Z'], [noop, noop]);
 
+      // Outut test results to a dedicated DIV.
+      var debugConsole = document.getElementById('debug-console');
+      asserter.output = function(msg) {
+          debugConsole.innerText += msg + '\n';
+      };
+
+      // Run tests.
       asserter
       .test('one to one').that(function() {
           triggerKeyEvent('A');
