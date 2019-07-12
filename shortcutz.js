@@ -1,9 +1,11 @@
 /**
  * A dead-simple yet powerful keyboard shortcuts manager.
- * @param {string} eventType Keyboard event type: keydown (default), keypress, keyup.
- * @param {string} context DOM element to attach key events. Default: document.
+ * @param {string} eventType Keyboard event type: `keydown` (default), `keypress`, `keyup`.
+ * @param {object} context DOM element to attach key events. Default: `document`.
  * @author Luis A. Leiva
+ * @class
  * @example
+ * // By default, `keydown` events are attached to `window.document`.
  * var shortz = new Shortcutz();
  * // Assign one callback to one shortcut.
  * shortz.add('A', console.log);
@@ -13,6 +15,11 @@
  * shortz.add('CTRL + A', [console.log, console.info]);
  * // Flexible shortcut definition.
  * shortz.add('CTRL+A', [console.log, console.info]);
+ * // Listen to `keyup` events in a particular DOM element with ID 'text-editor'.
+ * var keyManager = new Shortcutz('keyup', document.getElementById('text-editor'));
+ * keyManager.add('CTRL + C', function(ev) {
+ *     // Handle CTRL+C shortcut triggered on 'text-editor'.
+ * });
  */
 function Shortcutz(eventType, context) { // eslint-disable-line no-unused-vars
     eventType = eventType || 'keydown';

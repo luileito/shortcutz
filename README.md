@@ -5,8 +5,9 @@ A dead-simple yet powerful keyboard shortcuts manager.
 ## Examples
 
 ```js
-// The constructor accepts an argument to specifiy the Keyboard event type.
+// The constructor accepts a first argument to specifiy the Keyboard event type.
 // Accepted values are: `keydown` (default), `keypress`, `keyup`.
+// The constructor accepts a second argument to specifiy the element context (default: `document`).
 var shortz = new Shortcutz();
 
 // Assign one callback to one shortcut.
@@ -20,6 +21,12 @@ shortz.add('CTRL + A', [console.log, console.info]);
 
 // Flexible shortcut definition.
 shortz.add('CTRL+A', [console.log, console.info]);
+
+// Listen to `keyup` events in a particular DOM element with ID 'text-editor'.
+var keyManager = new Shortcutz('keyup', document.getElementById('text-editor'));
+keyManager.add('CTRL + C', function(ev) {
+    // Handle CTRL+C shortcut triggered on 'text-editor'.
+});
 ```
 
 ## Tests
